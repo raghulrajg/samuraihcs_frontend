@@ -24,6 +24,8 @@ It is a fast, accessible, dependency-free static site. It needs no build step an
 ├── index.html              # Home page (all sections)
 ├── 404.html                # Custom "page not found"
 ├── .htaccess               # Apache/LiteSpeed: redirects, security & caching headers
+├── .nojekyll               # GitHub Pages: publish files as-is
+├── contact-us/index.html   # Redirects the old /contact-us/ URL to the contact form
 ├── robots.txt
 ├── sitemap.xml
 ├── site.webmanifest
@@ -79,6 +81,40 @@ Upload the repository contents (except `README.md` and `LICENSE`, which are opti
 
 - **Apache / LiteSpeed (cPanel, most shared hosting):** `.htaccess` is applied automatically. It also redirects the old WordPress URLs (`/contact-us/`, `/contact/`, `/blog/`) to the new page.
 - **Nginx, Netlify, Cloudflare Pages, Vercel and others:** copy the headers and redirects from `.htaccess` into that platform's configuration.
+
+### GitHub Pages
+
+1. GitHub Pages needs a **public** repository on a free plan, or GitHub Pro/Team for a private one:
+   **Settings → General → Danger Zone → Change visibility**.
+2. **Settings → Pages → Build and deployment → Source: Deploy from a branch**, then choose the branch
+   (e.g. `main`) and the `/ (root)` folder, and click **Save**.
+3. After a minute or two the site is live at `https://<user>.github.io/samuraihcs_frontend/`.
+
+To serve it on **samuraihcs.com**:
+
+1. At your domain's DNS provider, point the domain at GitHub. Leave the **MX** (email) records unchanged.
+
+   | Type | Name | Value |
+   | --- | --- | --- |
+   | A | `@` | `185.199.108.153` |
+   | A | `@` | `185.199.109.153` |
+   | A | `@` | `185.199.110.153` |
+   | A | `@` | `185.199.111.153` |
+   | CNAME | `www` | `<user>.github.io` |
+
+   Remove any other `A`/`AAAA` records for `@` (the old host's). Optionally add the matching `AAAA` records:
+   `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153`.
+2. **Settings → Pages → Custom domain:** enter `samuraihcs.com` and save. This adds a `CNAME` file to the branch.
+3. Once the DNS check passes, tick **Enforce HTTPS**.
+4. Recommended: verify the domain under your account's **Settings → Pages** so that no one else can claim it.
+
+Notes for GitHub Pages:
+
+- `.nojekyll` tells Pages to publish the files exactly as they are, without running Jekyll.
+- Pages ignores `.htaccess`, so its custom security headers and redirects don't apply there. GitHub provides HTTPS.
+  The old `/contact-us/` link still works through `contact-us/index.html`.
+- `404.html` uses root paths (`/assets/…`). It displays correctly on `samuraihcs.com`, but appears unstyled on the
+  `github.io/samuraihcs_frontend/` preview address.
 
 Static assets are cached for 30 days. After changing a CSS, JS or image file, rename it or add a version query (e.g. `main.css?v=2`) so returning visitors get the update.
 
