@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://samuraihcs.com/sitemap.xml
+Sitemap: https://samuraihealthcare.com/sitemap.xml

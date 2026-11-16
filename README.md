@@ -90,9 +90,15 @@ Upload the repository contents (except `README.md` and `LICENSE`, which are opti
    (e.g. `main`) and the `/ (root)` folder, and click **Save**.
 3. After a minute or two the site is live at `https://<user>.github.io/samuraihcs_frontend/`.
 
-To serve it on **samuraihcs.com**:
+To serve it on **samuraihealthcare.com** (registered at GoDaddy):
 
-1. At your domain's DNS provider, point the domain at GitHub. Leave the **MX** (email) records unchanged.
+1. **Verify the domain on GitHub** (stops anyone else from claiming it): profile picture → **Settings → Pages →
+   Add a domain** → `samuraihealthcare.com`. GitHub shows a TXT record. Add it in GoDaddy (step 3), then click **Verify**.
+2. **Repository Settings → Pages → Custom domain:** enter `samuraihealthcare.com` and save. This adds a `CNAME`
+   file to the branch. Don't delete that file.
+3. **GoDaddy:** go to **My Products → samuraihealthcare.com → DNS**.
+   - Turn off **Forwarding** and disconnect any GoDaddy **Website Builder** site. These override DNS.
+   - Edit the existing `A` record for `@` (often shown as "Parked") and add more, so that there are exactly these four:
 
    | Type | Name | Value |
    | --- | --- | --- |
@@ -101,19 +107,18 @@ To serve it on **samuraihcs.com**:
    | A | `@` | `185.199.110.153` |
    | A | `@` | `185.199.111.153` |
    | CNAME | `www` | `<user>.github.io` |
+   | TXT | `_github-pages-challenge-<user>` | *(the code from step 1)* |
 
-   Remove any other `A`/`AAAA` records for `@` (the old host's). Optionally add the matching `AAAA` records:
+   Leave the `NS`, `SOA`, `MX` and other email records unchanged. Optionally add the matching `AAAA` records for `@`:
    `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153`.
-2. **Settings → Pages → Custom domain:** enter `samuraihcs.com` and save. This adds a `CNAME` file to the branch.
-3. Once the DNS check passes, tick **Enforce HTTPS**.
-4. Recommended: verify the domain under your account's **Settings → Pages** so that no one else can claim it.
+4. Once **Settings → Pages** shows "DNS check successful", tick **Enforce HTTPS**.
 
 Notes for GitHub Pages:
 
 - `.nojekyll` tells Pages to publish the files exactly as they are, without running Jekyll.
 - Pages ignores `.htaccess`, so its custom security headers and redirects don't apply there. GitHub provides HTTPS.
   The old `/contact-us/` link still works through `contact-us/index.html`.
-- `404.html` uses root paths (`/assets/…`). It displays correctly on `samuraihcs.com`, but appears unstyled on the
+- `404.html` uses root paths (`/assets/…`). It displays correctly on `samuraihealthcare.com`, but appears unstyled on the
   `github.io/samuraihcs_frontend/` preview address.
 
 Static assets are cached for 30 days. After changing a CSS, JS or image file, rename it or add a version query (e.g. `main.css?v=2`) so returning visitors get the update.
@@ -124,7 +129,8 @@ Static assets are cached for 30 days. After changing a CSS, JS or image file, re
 - [ ] Confirm the statistics (99% client retention, 15+ years, 80+ professionals, 10M+ project value) and product descriptions are accurate.
 - [ ] Add social media links to the footer if the company has active profiles.
 - [ ] Set a contact form endpoint (optional, see above).
-- [ ] Submit `https://samuraihcs.com/sitemap.xml` in Google Search Console.
+- [ ] Submit `https://samuraihealthcare.com/sitemap.xml` in Google Search Console.
+- [ ] Optional: redirect the old domain `samuraihcs.com` to `samuraihealthcare.com`. Keep its email records unchanged.
 
 ## Credits & licences
 
